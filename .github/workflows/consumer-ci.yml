@@ -1,0 +1,54 @@
+name: Consumer CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'consumer/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.20
+
+      - name: Install Dependencies
+        run: |
+          cd consumer
+          go mod tidy
+
+      - name: Run Tests
+        run: |
+          cd consumer
+          go test ./...
+
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/consumer-service:latest ./consumer
+          docker push ${{ secrets.DOCKER_USERNAME }}/consumer-service:latest
