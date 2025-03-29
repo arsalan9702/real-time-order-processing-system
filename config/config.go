@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"real-time-order-processing-system/models"
 )
 
 var DB *gorm.DB
@@ -16,4 +17,11 @@ func InitDB() {
 		panic("failed to connect database")
 	}
 	fmt.Println("Connected to database")
+}
+
+func MigrateDB() {
+	err := DB.AutoMigrate(&models.Order{})
+	if err != nil {
+		return
+	}
 }
