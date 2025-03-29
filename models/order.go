@@ -7,5 +7,5 @@ type Order struct {
 	UserID    int `json:"user_id"`
 	ProductID int `json:"product_id"`
 	Quantity  int `json:"quantity"`
-	Status    int `json:"status"`
+	Status    string `json:"status"`
 }
