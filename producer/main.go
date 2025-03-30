@@ -1,18 +1,18 @@
-package main
+package producer
 
 import (
 	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
 	"real-time-order-processing-system/config"
-	"github.com/gorilla/mux"
 )
 
-func init(){
+func init() {
 	config.InitDB()
 	InitKafkaProducer()
 }
 
-func main(){
+func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/orders", createOrder).Methods("POST")
 

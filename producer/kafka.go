@@ -1,4 +1,4 @@
-package main
+package producer
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 var producer *kafka.Producer
 
-func InitKafkaProducer(){
+func InitKafkaProducer() {
 	var err error
 	producer, err = kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": "localhost:9092",
@@ -21,15 +21,15 @@ func InitKafkaProducer(){
 	fmt.Println("Kafka Producer Initialized")
 }
 
-func SendMessage(topic string, message []byte){
+func SendMessage(topic string, message []byte) {
 	err := producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: int32(kafka.PartitionAny)},
-		Value: message,
+		Value:          message,
 	}, nil)
 
 	if err != nil {
 		log.Println("Failed to send kafka message: ", err)
-	}else{
+	} else {
 		fmt.Println("Message sent to kafka: ", string(message))
 	}
 }
