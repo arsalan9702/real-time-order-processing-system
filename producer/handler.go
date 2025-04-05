@@ -1,4 +1,4 @@
-package producer
+package main
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"real-time-order-processing-system/models"
 )
 
-func createOrder(w http.ResponseWriter, r *http.Request) {
+func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	var order models.Order
 	json.NewDecoder(r.Body).Decode(&order)
 	order.Status = "Pending"
