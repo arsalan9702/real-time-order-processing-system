@@ -2,15 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"real-time-order-processing-system/config"
+	"real-time-order-processing-system/internal/kafka"
+
+	"github.com/gorilla/mux"
 )
 
 func init() {
 	config.InitDB()
 	config.MigrateDB()
-	InitKafkaProducer()
+	kafka.InitKafkaProducer()
 }
 
 func main() {

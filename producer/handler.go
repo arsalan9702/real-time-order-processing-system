@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"real-time-order-processing-system/config"
+	"real-time-order-processing-system/internal/kafka"
 	"real-time-order-processing-system/models"
 )
 
@@ -15,7 +16,7 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 	config.DB.Create(&order)
 
 	orderJSON, _ := json.Marshal(order)
-	SendMessage("orders", orderJSON)
+	kafka.SendMessage("orders", orderJSON)
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(order)
